@@ -1,11 +1,13 @@
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
-public class Register extends JFrame {
+public class Register extends JFrame implements ActionListener {
     public static ArrayList<String> username = new ArrayList<>();
     public static ArrayList<Integer> password = new ArrayList<>();
     public static ArrayList<String> email = new ArrayList<>();
@@ -19,7 +21,12 @@ public class Register extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         setResizable(false);
+        ui();
+        setVisible(true);
 
+
+    }
+    public void ui(){
         JPanel panel = new JPanel();
         panel.setBounds(70, 100, 350, 500);
         panel.setBackground(new java.awt.Color(234, 228, 228));
@@ -105,7 +112,6 @@ public class Register extends JFrame {
             String passwordText = passwordField.getText();
             String emailText = emailField.getText();
             boolean valid = true;
-
             if (emailText.equals("Enter Email") || emailText.isEmpty()) {
                 emailField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
                 labelAlreadyHaveEmail.setText("Email cannot be empty");
@@ -172,9 +178,8 @@ public class Register extends JFrame {
             new Login();
         });
         panel.add(loginButton);
-
-        setVisible(true);
     }
+
 
     private void addPlaceholder(JTextField textField, String placeholder) {
         textField.setText(placeholder);
@@ -197,5 +202,10 @@ public class Register extends JFrame {
                 }
             }
         });
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
