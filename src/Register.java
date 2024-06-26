@@ -148,7 +148,6 @@ public class Register extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         String usernameText = usernameField.getText();
         String passwordText = passwordField.getText();
         String emailText = emailField.getText();
