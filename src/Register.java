@@ -14,6 +14,7 @@ public class Register extends JFrame implements ActionListener {
     private JLabel labelAlreadyHaveEmail;
     private JLabel labelAlreadyHaveUsername;
     private JLabel labelAlreadyHavePassword;
+    private  JTextField usernameField, passwordField, emailField;
 
     Register(){
         setSize(500, 800);
@@ -41,7 +42,7 @@ public class Register extends JFrame implements ActionListener {
 
         //----------------------------------------------------------------------
 
-        JTextField usernameField = new JTextField();
+        usernameField = new JTextField();
         usernameField.setBounds(25, 100, 250, 30);
         usernameField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
         usernameField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -62,7 +63,7 @@ public class Register extends JFrame implements ActionListener {
 
         //----------------------------------------------------------------------
 
-        JTextField passwordField = new JTextField();
+         passwordField = new JTextField();
         passwordField.setBounds(25, 180, 250, 30);
         passwordField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
         passwordField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -83,7 +84,7 @@ public class Register extends JFrame implements ActionListener {
 
         //----------------------------------------------------------------------
 
-        JTextField emailField = new JTextField();
+         emailField = new JTextField();
         emailField.setBounds(25, 250, 250, 30);
         emailField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
         emailField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -107,66 +108,7 @@ public class Register extends JFrame implements ActionListener {
         registerButton.setBounds(90, 325, 150, 30);
         registerButton.setBackground(new Color(123, 164, 205, 232));
         registerButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        registerButton.addActionListener(e -> {
-            String usernameText = usernameField.getText();
-            String passwordText = passwordField.getText();
-            String emailText = emailField.getText();
-            boolean valid = true;
-            if (emailText.equals("Enter Email") || emailText.isEmpty()) {
-                emailField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHaveEmail.setText("Email cannot be empty");
-                valid = false;
-            } else if (email.contains(emailText)) {
-                emailField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHaveEmail.setText("This email is already registered");
-                valid = false;
-            } else if (!emailText.endsWith("@gmail.com")) {
-                emailField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHaveEmail.setText("You must have email @gmail.com");
-                valid = false;
-            }else {
-                emailField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
-                labelAlreadyHaveEmail.setText("");
-            }
-
-            if (usernameText.equals("Enter Username") || usernameText.isEmpty()) {
-                usernameField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHaveUsername.setText("Username cannot be empty");
-                valid = false;
-            } else if (username.contains(usernameText)) {
-                usernameField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHaveUsername.setText("This username is already registered");
-                valid = false;
-            } else {
-                usernameField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
-                labelAlreadyHaveUsername.setText("");
-            }
-
-            if (passwordText.equals("Enter Password") || passwordText.isEmpty()) {
-                passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHavePassword.setText("Password cannot be empty");
-                valid = false;
-            } else if (passwordField.getText().contains(",") || passwordField.getText().contains(".") || passwordField.getText().contains("/") ||passwordField.getText().contains("*") ||passwordField.getText().contains("?") ||passwordField.getText().contains("<") ||passwordField.getText().contains(">") ||passwordField.getText().contains("+")||passwordField.getText().contains("=")||passwordField.getText().contains("-") ||passwordField.getText().contains("(") ||passwordField.getText().contains(")") ||passwordField.getText().contains("@") ||passwordField.getText().contains("#")||passwordField.getText().contains("$")||passwordField.getText().contains("%")||passwordField.getText().contains("^")||passwordField.getText().contains("&")||passwordField.getText().contains("_")) {
-                passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHavePassword.setText("Illegal symbol");
-                valid = false;
-            } else {
-                passwordField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
-                labelAlreadyHavePassword.setText("");
-            }
-
-            if(valid) {
-                username.add(usernameText);
-                usernameField.setText("");
-                password.add(Integer.parseInt(passwordText));
-                passwordField.setText("");
-                email.add(emailText);
-                emailField.setText("");
-                JOptionPane.showMessageDialog(null, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-                new Login();
-            }
-        });
+        registerButton.addActionListener(this);
         panel.add(registerButton);
 
         JButton loginButton = new JButton("Login");
@@ -207,5 +149,63 @@ public class Register extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        String usernameText = usernameField.getText();
+        String passwordText = passwordField.getText();
+        String emailText = emailField.getText();
+        boolean valid = true;
+        if (emailText.equals("Enter Email") || emailText.isEmpty()) {
+            emailField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHaveEmail.setText("Email cannot be empty");
+            valid = false;
+        } else if (email.contains(emailText)) {
+            emailField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHaveEmail.setText("This email is already registered");
+            valid = false;
+        } else if (!emailText.endsWith("@gmail.com")) {
+            emailField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHaveEmail.setText("You must have email @gmail.com");
+            valid = false;
+        }else {
+            emailField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
+            labelAlreadyHaveEmail.setText("");
+        }
+
+        if (usernameText.equals("Enter Username") || usernameText.isEmpty()) {
+            usernameField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHaveUsername.setText("Username cannot be empty");
+            valid = false;
+        } else if (username.contains(usernameText)) {
+            usernameField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHaveUsername.setText("This username is already registered");
+            valid = false;
+        } else {
+            usernameField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
+            labelAlreadyHaveUsername.setText("");
+        }
+
+        if (passwordText.equals("Enter Password") || passwordText.isEmpty()) {
+            passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHavePassword.setText("Password cannot be empty");
+            valid = false;
+        } else if (passwordField.getText().contains(",") || passwordField.getText().contains(".") || passwordField.getText().contains("/") ||passwordField.getText().contains("*") ||passwordField.getText().contains("?") ||passwordField.getText().contains("<") ||passwordField.getText().contains(">") ||passwordField.getText().contains("+")||passwordField.getText().contains("=")||passwordField.getText().contains("-") ||passwordField.getText().contains("(") ||passwordField.getText().contains(")") ||passwordField.getText().contains("@") ||passwordField.getText().contains("#")||passwordField.getText().contains("$")||passwordField.getText().contains("%")||passwordField.getText().contains("^")||passwordField.getText().contains("&")||passwordField.getText().contains("_")) {
+            passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHavePassword.setText("Illegal symbol");
+            valid = false;
+        } else {
+            passwordField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
+            labelAlreadyHavePassword.setText("");
+        }
+
+        if(valid) {
+            username.add(usernameText);
+            usernameField.setText("");
+            password.add(Integer.parseInt(passwordText));
+            passwordField.setText("");
+            email.add(emailText);
+            emailField.setText("");
+            JOptionPane.showMessageDialog(null, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            new Login();
+        }
     }
 }
