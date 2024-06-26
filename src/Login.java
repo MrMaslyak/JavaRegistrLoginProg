@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,8 @@ public class Login extends JFrame implements ActionListener {
     private JLabel labelAlreadyHaveUsername;
     private JLabel labelAlreadyHavePassword;
     private JTextField usernameLoginField, passwordLoginField;
-    private  JButton registerButton;
+    private  JButton registerButton , indicator, indicatorUserLogin, indicatorPassLogin;
+    private  JPanel panelLogin;
     Login(){
 
         setSize(500, 600);
@@ -25,7 +27,7 @@ public class Login extends JFrame implements ActionListener {
 
 
     public void uiL(){
-        JPanel panelLogin = new JPanel();
+        panelLogin = new JPanel();
         panelLogin.setBounds(70, 100, 350, 450);
         panelLogin.setBackground(new Color(234, 228, 228));
         panelLogin.setBorder(BorderFactory.createLineBorder(Color.cyan, 2));
@@ -42,6 +44,7 @@ public class Login extends JFrame implements ActionListener {
         usernameLoginField = new JTextField();
         usernameLoginField.setBounds(25, 100, 250, 30);
         usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
+        ((AbstractDocument) usernameLoginField.getDocument()).setDocumentFilter(new LimitDocumentFilter(15));
         usernameLoginField.setFont(new Font("Arial", Font.PLAIN, 16));
         addPlaceholder(usernameLoginField, "Enter Username");
         panelLogin.add(usernameLoginField);
@@ -63,6 +66,7 @@ public class Login extends JFrame implements ActionListener {
         passwordLoginField = new JTextField();
         passwordLoginField.setBounds(25, 180, 250, 30);
         passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
+        ((AbstractDocument) passwordLoginField.getDocument()).setDocumentFilter(new LimitDocumentFilter(15));
         passwordLoginField.setFont(new Font("Arial", Font.PLAIN, 16));
         addPlaceholder(passwordLoginField, "Enter Password");
         panelLogin.add(passwordLoginField);
@@ -89,17 +93,33 @@ public class Login extends JFrame implements ActionListener {
         loginButton.addActionListener(this);
         panelLogin.add(loginButton);
 
-
-
         registerButton = new JButton("Regist");
         registerButton.setBounds(220, 400, 100, 30);
         registerButton.setBackground(new Color(146, 197, 251, 232));
         registerButton.setFont(new Font("Arial", Font.ITALIC, 16));
         registerButton.addActionListener(this);
         panelLogin.add(registerButton);
+
+
+        //----------------------------------------------------------------------
+        indicatorUserLogin = createIndicatorLogin(285, 110);
+        indicatorPassLogin = createIndicatorLogin(285, 190);
+
+        //----------------------------------------------------------------------
+
     }
 
-
+    private JButton createIndicatorLogin(int x , int y){
+        indicator = new RoundButton("");
+        indicator.setBounds(x, y, 10, 10);
+        indicator.setBackground(Color.yellow);
+        indicator.setBorder(null);
+        indicator.setEnabled(false);
+        indicator.setOpaque(false);
+        indicator.addActionListener(this);
+        panelLogin.add(indicator);
+        return indicator;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -111,26 +131,32 @@ public class Login extends JFrame implements ActionListener {
         if (enteredUsername.equals("Enter Username") || enteredUsername.isEmpty()) {
             usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
             labelAlreadyHaveUsername.setText("Username cannot be empty");
+            indicatorUserLogin.setBackground(Color.red);
             valid = false;
         }  else if (usernameLoginField.getText().contains(",") || usernameLoginField.getText().contains(".") || usernameLoginField.getText().contains("/") ||usernameLoginField.getText().contains("*") ||usernameLoginField.getText().contains("?") ||usernameLoginField.getText().contains("<") ||usernameLoginField.getText().contains(">") ||usernameLoginField.getText().contains("+")||usernameLoginField.getText().contains("=")||usernameLoginField.getText().contains("-") ||usernameLoginField.getText().contains("(") ||usernameLoginField.getText().contains(")") ||usernameLoginField.getText().contains("@") ||usernameLoginField.getText().contains("#")||usernameLoginField.getText().contains("$")||usernameLoginField.getText().contains("%")||usernameLoginField.getText().contains("^")||usernameLoginField.getText().contains("&")||usernameLoginField.getText().contains("_")) {
             usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
             labelAlreadyHaveUsername.setText("Illegal symbol");
+            indicatorUserLogin.setBackground(Color.red);
             valid = false;
-        } else {
+        }  else {
             usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
+            indicatorUserLogin.setBackground(Color.green);
             labelAlreadyHaveUsername.setText("");
         }
 
         if (enteredPassword.equals("Enter Password") || enteredPassword.isEmpty()) {
             passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            indicatorPassLogin.setBackground(Color.red);
             labelAlreadyHavePassword.setText("Password cannot be empty");
             valid = false;
         } else if (passwordLoginField.getText().contains(",") || passwordLoginField.getText().contains(".") || passwordLoginField.getText().contains("/") ||passwordLoginField.getText().contains("*") ||passwordLoginField.getText().contains("?") ||passwordLoginField.getText().contains("<") ||passwordLoginField.getText().contains(">") ||passwordLoginField.getText().contains("+")||passwordLoginField.getText().contains("=")||passwordLoginField.getText().contains("-") ||passwordLoginField.getText().contains("(") ||passwordLoginField.getText().contains(")") ||passwordLoginField.getText().contains("@") ||passwordLoginField.getText().contains("#")||passwordLoginField.getText().contains("$")||passwordLoginField.getText().contains("%")||passwordLoginField.getText().contains("^")||passwordLoginField.getText().contains("&")||passwordLoginField.getText().contains("_")){
             passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
             labelAlreadyHavePassword.setText("Illegal symbol");
+            indicatorPassLogin.setBackground(Color.red);
             valid = false;
         } else {
             passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
+            indicatorPassLogin.setBackground(Color.green);
             labelAlreadyHavePassword.setText("");
         }
 
@@ -141,10 +167,13 @@ public class Login extends JFrame implements ActionListener {
                     dispose();
                     new Game();
                     break;
+
                 }
             }
             if (!found) {
                 JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                indicatorPassLogin.setBackground(Color.yellow);
+                indicatorUserLogin.setBackground(Color.yellow);
             }
         }
 
