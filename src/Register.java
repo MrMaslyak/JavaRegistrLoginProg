@@ -15,6 +15,7 @@ public class Register extends JFrame implements ActionListener {
     private JLabel labelAlreadyHaveUsername;
     private JLabel labelAlreadyHavePassword;
     private  JTextField usernameField, passwordField, emailField;
+    private  JButton loginButton;
 
     Register(){
         setSize(500, 800);
@@ -63,7 +64,7 @@ public class Register extends JFrame implements ActionListener {
 
         //----------------------------------------------------------------------
 
-         passwordField = new JTextField();
+        passwordField = new JTextField();
         passwordField.setBounds(25, 180, 250, 30);
         passwordField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
         passwordField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -84,13 +85,12 @@ public class Register extends JFrame implements ActionListener {
 
         //----------------------------------------------------------------------
 
-         emailField = new JTextField();
+        emailField = new JTextField();
         emailField.setBounds(25, 250, 250, 30);
         emailField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
         emailField.setFont(new Font("Arial", Font.PLAIN, 16));
         addPlaceholder(emailField, "Enter Email");
         panel.add(emailField);
-
         JLabel emailLabel = new JLabel("Email");
         emailLabel.setBounds(25 , 275, 120, 30);
         emailLabel.setFont(new Font("Arial", Font.ITALIC, 16));
@@ -111,14 +111,11 @@ public class Register extends JFrame implements ActionListener {
         registerButton.addActionListener(this);
         panel.add(registerButton);
 
-        JButton loginButton = new JButton("Login");
+        loginButton = new JButton("Login");
         loginButton.setBounds(250, 450, 75, 30);
         loginButton.setBackground(new Color(146, 197, 251, 232));
         loginButton.setFont(new Font("Arial", Font.ITALIC, 16));
-        loginButton.addActionListener(e -> {
-            dispose();
-            new Login();
-        });
+        loginButton.addActionListener(this);
         panel.add(loginButton);
     }
 
@@ -181,18 +178,22 @@ public class Register extends JFrame implements ActionListener {
             usernameField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
             labelAlreadyHaveUsername.setText("");
         }
-
         if (passwordText.equals("Enter Password") || passwordText.isEmpty()) {
             passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
             labelAlreadyHavePassword.setText("Password cannot be empty");
             valid = false;
-        } else if (passwordField.getText().contains(",") || passwordField.getText().contains(".") || passwordField.getText().contains("/") ||passwordField.getText().contains("*") ||passwordField.getText().contains("?") ||passwordField.getText().contains("<") ||passwordField.getText().contains(">") ||passwordField.getText().contains("+")||passwordField.getText().contains("=")||passwordField.getText().contains("-") ||passwordField.getText().contains("(") ||passwordField.getText().contains(")") ||passwordField.getText().contains("@") ||passwordField.getText().contains("#")||passwordField.getText().contains("$")||passwordField.getText().contains("%")||passwordField.getText().contains("^")||passwordField.getText().contains("&")||passwordField.getText().contains("_")) {
+        } else if (passwordField.getText().contains(",")|| passwordField.getText().contains(".")|| passwordField.getText().contains("/") ||passwordField.getText().contains("*") ||passwordField.getText().contains("?") ||passwordField.getText().contains("<") ||passwordField.getText().contains(">") ||passwordField.getText().contains("+")||passwordField.getText().contains("=")||passwordField.getText().contains("-") ||passwordField.getText().contains("(") ||passwordField.getText().contains(")") ||passwordField.getText().contains("@") ||passwordField.getText().contains("#")||passwordField.getText().contains("$")||passwordField.getText().contains("%")||passwordField.getText().contains("^")||passwordField.getText().contains("&")||passwordField.getText().contains("_")) {
             passwordField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
             labelAlreadyHavePassword.setText("Illegal symbol");
             valid = false;
         } else {
             passwordField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
             labelAlreadyHavePassword.setText("");
+        }
+
+        if (e.getSource() == loginButton){
+            dispose();
+            new Login();
         }
 
         if(valid) {

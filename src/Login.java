@@ -1,19 +1,30 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class Login extends JFrame   {
+public class Login extends JFrame implements ActionListener {
     private JLabel labelAlreadyHaveUsername;
     private JLabel labelAlreadyHavePassword;
+    private JTextField usernameLoginField, passwordLoginField;
+    private  JButton registerButton;
     Login(){
 
-       setSize(500, 600);
+        setSize(500, 600);
         setTitle("Login");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         setResizable(false);
+        uiL();
+        setVisible(true);
+    }
 
+
+
+
+    public void uiL(){
         JPanel panelLogin = new JPanel();
         panelLogin.setBounds(70, 100, 350, 450);
         panelLogin.setBackground(new Color(234, 228, 228));
@@ -28,7 +39,7 @@ public class Login extends JFrame   {
 
         //----------------------------------------------------------------------
 
-        JTextField usernameLoginField = new JTextField();
+        usernameLoginField = new JTextField();
         usernameLoginField.setBounds(25, 100, 250, 30);
         usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
         usernameLoginField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -49,7 +60,7 @@ public class Login extends JFrame   {
 
         //----------------------------------------------------------------------
 
-        JTextField passwordLoginField = new JTextField();
+        passwordLoginField = new JTextField();
         passwordLoginField.setBounds(25, 180, 250, 30);
         passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color (13, 100, 191, 232), 2));
         passwordLoginField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -75,73 +86,80 @@ public class Login extends JFrame   {
         loginButton.setBounds(90, 265, 150, 30);
         loginButton.setBackground(new Color(123, 164, 205, 232));
         loginButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        loginButton.addActionListener(e -> {
-            String enteredUsername = usernameLoginField.getText();
-            String enteredPassword = passwordLoginField.getText();
-
-            boolean found = false;
-            boolean valid = true;
-
-            if (enteredUsername.equals("Enter Username") || enteredUsername.isEmpty()) {
-                usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHaveUsername.setText("Username cannot be empty");
-                valid = false;
-            }  else if (usernameLoginField.getText().contains(",") || usernameLoginField.getText().contains(".") || usernameLoginField.getText().contains("/") ||usernameLoginField.getText().contains("*") ||usernameLoginField.getText().contains("?") ||usernameLoginField.getText().contains("<") ||usernameLoginField.getText().contains(">") ||usernameLoginField.getText().contains("+")||usernameLoginField.getText().contains("=")||usernameLoginField.getText().contains("-") ||usernameLoginField.getText().contains("(") ||usernameLoginField.getText().contains(")") ||usernameLoginField.getText().contains("@") ||usernameLoginField.getText().contains("#")||usernameLoginField.getText().contains("$")||usernameLoginField.getText().contains("%")||usernameLoginField.getText().contains("^")||usernameLoginField.getText().contains("&")||usernameLoginField.getText().contains("_")) {
-                usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHaveUsername.setText("Illegal symbol");
-                valid = false;
-            } else {
-                usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
-                labelAlreadyHaveUsername.setText("");
-            }
-
-            if (enteredPassword.equals("Enter Password") || enteredPassword.isEmpty()) {
-                passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHavePassword.setText("Password cannot be empty");
-                valid = false;
-            } else if (passwordLoginField.getText().contains(",") || passwordLoginField.getText().contains(".") || passwordLoginField.getText().contains("/") ||passwordLoginField.getText().contains("*") ||passwordLoginField.getText().contains("?") ||passwordLoginField.getText().contains("<") ||passwordLoginField.getText().contains(">") ||passwordLoginField.getText().contains("+")||passwordLoginField.getText().contains("=")||passwordLoginField.getText().contains("-") ||passwordLoginField.getText().contains("(") ||passwordLoginField.getText().contains(")") ||passwordLoginField.getText().contains("@") ||passwordLoginField.getText().contains("#")||passwordLoginField.getText().contains("$")||passwordLoginField.getText().contains("%")||passwordLoginField.getText().contains("^")||passwordLoginField.getText().contains("&")||passwordLoginField.getText().contains("_")){
-                passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
-                labelAlreadyHavePassword.setText("Illegal symbol");
-                valid = false;
-            } else {
-                passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
-                labelAlreadyHavePassword.setText("");
-            }
-
-            if (valid) {
-                for (int i = 0; i < Register.username.size(); i++) {
-                    if (enteredUsername.equals(Register.username.get(i)) && enteredPassword.equals(Register.password.get(i).toString())) {
-                        found = true;
-                        dispose();
-                        new Game();
-                        break;
-                    }
-                }
-                if (!found) {
-                    JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        loginButton.addActionListener(this);
         panelLogin.add(loginButton);
 
 
 
-        JButton registerButton = new JButton("Regist");
+        registerButton = new JButton("Regist");
         registerButton.setBounds(220, 400, 100, 30);
         registerButton.setBackground(new Color(146, 197, 251, 232));
         registerButton.setFont(new Font("Arial", Font.ITALIC, 16));
-        registerButton.addActionListener(e -> {
+        registerButton.addActionListener(this);
+        panelLogin.add(registerButton);
+    }
+
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String enteredUsername = usernameLoginField.getText();
+        String enteredPassword = passwordLoginField.getText();
+        boolean found = false;
+        boolean valid = true;
+
+        if (enteredUsername.equals("Enter Username") || enteredUsername.isEmpty()) {
+            usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHaveUsername.setText("Username cannot be empty");
+            valid = false;
+        }  else if (usernameLoginField.getText().contains(",") || usernameLoginField.getText().contains(".") || usernameLoginField.getText().contains("/") ||usernameLoginField.getText().contains("*") ||usernameLoginField.getText().contains("?") ||usernameLoginField.getText().contains("<") ||usernameLoginField.getText().contains(">") ||usernameLoginField.getText().contains("+")||usernameLoginField.getText().contains("=")||usernameLoginField.getText().contains("-") ||usernameLoginField.getText().contains("(") ||usernameLoginField.getText().contains(")") ||usernameLoginField.getText().contains("@") ||usernameLoginField.getText().contains("#")||usernameLoginField.getText().contains("$")||usernameLoginField.getText().contains("%")||usernameLoginField.getText().contains("^")||usernameLoginField.getText().contains("&")||usernameLoginField.getText().contains("_")) {
+            usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHaveUsername.setText("Illegal symbol");
+            valid = false;
+        } else {
+            usernameLoginField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
+            labelAlreadyHaveUsername.setText("");
+        }
+
+        if (enteredPassword.equals("Enter Password") || enteredPassword.isEmpty()) {
+            passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHavePassword.setText("Password cannot be empty");
+            valid = false;
+        } else if (passwordLoginField.getText().contains(",") || passwordLoginField.getText().contains(".") || passwordLoginField.getText().contains("/") ||passwordLoginField.getText().contains("*") ||passwordLoginField.getText().contains("?") ||passwordLoginField.getText().contains("<") ||passwordLoginField.getText().contains(">") ||passwordLoginField.getText().contains("+")||passwordLoginField.getText().contains("=")||passwordLoginField.getText().contains("-") ||passwordLoginField.getText().contains("(") ||passwordLoginField.getText().contains(")") ||passwordLoginField.getText().contains("@") ||passwordLoginField.getText().contains("#")||passwordLoginField.getText().contains("$")||passwordLoginField.getText().contains("%")||passwordLoginField.getText().contains("^")||passwordLoginField.getText().contains("&")||passwordLoginField.getText().contains("_")){
+            passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(255, 2, 23, 232), 2));
+            labelAlreadyHavePassword.setText("Illegal symbol");
+            valid = false;
+        } else {
+            passwordLoginField.setBorder(BorderFactory.createLineBorder(new Color(13, 100, 191, 232), 2));
+            labelAlreadyHavePassword.setText("");
+        }
+
+        if (valid) {
+            for (int i = 0; i < Register.username.size(); i++) {
+                if (enteredUsername.equals(Register.username.get(i)) && enteredPassword.equals(Register.password.get(i).toString())) {
+                    found = true;
+                    dispose();
+                    new Game();
+                    break;
+                }
+            }
+            if (!found) {
+                JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        if (e.getSource() == registerButton){
             dispose();
             new Register();
-        });
-        panelLogin.add(registerButton);
-
-        setVisible(true);
+        }
     }
+
+
+
+
     private void addPlaceholder(JTextField textField, String placeholder) { //гпт нарисовал
         textField.setText(placeholder);
         textField.setForeground(Color.GRAY);
-
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -160,5 +178,4 @@ public class Login extends JFrame   {
             }
         });
     }
-
 }
