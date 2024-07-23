@@ -1,20 +1,23 @@
+package Documents;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import Interface.*;
+import Interface.Painter;
 
-public class RoundButton extends JButton {
+public class RoundButton extends JButton implements Painter {
+
     public RoundButton(String label) {
         super(label);
-
         Dimension size = getPreferredSize();
         size.width = size.height = Math.max(size.width, size.height);
         setPreferredSize(size);
-
         setContentAreaFilled(false);
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         if (getModel().isArmed()) {
             g.setColor(Color.lightGray);
         } else {
@@ -26,7 +29,7 @@ public class RoundButton extends JButton {
     }
 
     @Override
-    protected void paintBorder(Graphics g) {
+    public void paintBorder(Graphics g) {
         g.setColor(getForeground());
         g.drawOval(0, 0, getSize().width - 1, getSize().height - 1);
     }

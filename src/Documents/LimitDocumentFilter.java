@@ -1,8 +1,11 @@
+package Documents;
+
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
+import Interface.*;
 
-public class LimitDocumentFilter extends DocumentFilter { //gpt нарисовал
+public class LimitDocumentFilter extends DocumentFilter {
     private int limit;
 
     public LimitDocumentFilter(int limit) {
